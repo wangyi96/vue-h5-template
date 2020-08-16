@@ -1,0 +1,23 @@
+{
+  "id": "762313",
+  "name": "no name",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5342908",
+      "name": "位置",
+      "font_class": "weizhi",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "4873794",
+      "name": "沙漏",
+      "font_class": "shalou2",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    }
+  ]
+}
