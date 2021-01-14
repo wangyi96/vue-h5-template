@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Toast } from 'vant'
 // 根据环境不同引入不同api地址
 import { baseApi } from '../config'
+import router from '../router'
 import methods from '../utils/methods'
 
 // 配置请求头
@@ -13,7 +14,8 @@ axios.defaults.timeout = 5000;
 
 // request 请求拦截器
 axios.interceptors.request.use(config => {
-    const token = methods.getStorage('user') ? methods.getStorage('user').token : ''
+    config.headers.channel = 'h5'
+    const token = methods.getSessionStorage('loginToken') ? methods.getSessionStorage('loginToken') : ''
     // 不传递默认开启loading
     if (!config.hideloading) {
       // loading
@@ -22,7 +24,7 @@ axios.interceptors.request.use(config => {
       })
     }
     if (token) {
-      config.headers.Authorization = 'Bearer ' + token;
+      config.headers.token = token;
     }
     return config
   },
@@ -62,19 +64,35 @@ axios.interceptors.response.use(response => {
 // 发送请求
 export function post(url, params) {
   return new Promise((resolve, reject) => {
-      axios.post(url, params)
-          .then(
-              res => {
-                  resolve(res.data)
-              },
-              err => {
-                  console.log('------1')
-                  reject(err.data)
-              }
-          )
-          .catch(err => {
-              reject(err.data)
-          })
+    axios.post(url, params).then(
+      res => {
+        if(res.code == 410007 || res.code == 410001){
+          Toast(res.msg);
+          // if(methods.decideBrowser()){
+          //   window.location.href = 'https://crm.xcyunxt.com/front/wxlogin.html';
+          // }else{
+          //   router.push({name:'Login'})
+          // }
+          router.push({name:'Login'})
+          methods.removeSession('loginToken');
+        }else if(res.code == 0){
+          if(res.data == 'null'){
+            resolve(res)
+          }else{
+            resolve(res.data)
+          }
+        }else{
+          resolve(res);
+        }
+      },
+      err => {
+        console.log('error',err)
+        reject(err)
+      }
+    )
+    .catch(err => {
+      reject(err)
+    })
   })
 }
 
@@ -91,5 +109,3 @@ export function get(url, params) {
           })
   })
 }
-
-// export default service

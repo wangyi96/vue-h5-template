@@ -19,7 +19,7 @@ import '@/plugins/vant'
 import '@/assets/css/index.scss'
 // 移动端适配
 import 'lib-flexible/flexible.js'
-//公共方法utils
+//公共方法utils 
 import methods from './utils/methods'
 Vue.prototype.$methods = methods;
 //接口调用

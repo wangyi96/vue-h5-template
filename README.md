@@ -75,3 +75,47 @@
 ### utils
 - 公共组件，插件方法库
 
+### 使用Fastclick出现的问题
+- fastclick重写input textarea中聚焦问题
+- ios视频控件点击播放要双击问题
+```
+  // fastclick重写input textarea中聚焦问题
+  FastClick.prototype.focus = function (targetElement) {
+    var length;
+    if (targetElement.setSelectionRange && targetElement.type.indexOf('date') !== 0 && targetElement.type !== 'time' && targetElement.type !== 'month') {
+      length = targetElement.value.length;
+      targetElement.focus();
+      //  修复ios 11.3以上不弹出键盘，这里加上聚焦代码，让其强制聚焦弹出
+      targetElement.setSelectionRange(length, length);
+    } else {
+      targetElement.focus();
+    }
+  };
+
+  // ios视频控件点击播放要双击问题
+  var deviceIsWindowsPhone = navigator.userAgent.indexOf('Windows Phone') >= 0
+  var deviceIsIOS = /iP(ad|hone|od)/.test(navigator.userAgent) && !deviceIsWindowsPhone
+  FastClick.prototype.needsClick = function (target) {
+    switch (target.nodeName.toLowerCase()) {
+      case 'button':
+      case 'select':
+      case 'textarea':
+        if (target.disabled) {
+          return true
+        }
+        break
+      case 'input':
+        // File inputs need real clicks on iOS 6 due to a browser bug (issue #68)
+        if ((deviceIsIOS && target.type === 'file') || target.disabled) {
+          return true
+        }
+        break
+      case 'label':
+      case 'iframe': // iOS8 homescreen apps can prevent events bubbling into frames
+      case 'video':
+        return true
+    }
+    return (/\bneedsclick\b/).test(target.className) || /\bvjs/.test(target.className)
+  }
+```
+
