@@ -3,14 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,viewport-fit=cover">
+    <meta name="referrer" content="same-origin" />
+    <meta name="robots" content="none">
     <!-- <% for (var i in
       htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.css) { %>
       <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style" />
       <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet" />
-	  <% } %> -->
+    <% } %> -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
     <title><%= webpackConfig.name %></title>
+    <style type="text/css">
+      [v-cloak] {
+        display: none !important;
+      }
+    </style>
+    <script src="//at.alicdn.com/t/font_2020953_o0eipdx91l.js"></script>
   </head>
   <body>
     <noscript>
